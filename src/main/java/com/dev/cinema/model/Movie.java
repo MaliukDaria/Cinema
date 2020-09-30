@@ -1,15 +1,14 @@
 package com.dev.cinema.model;
 
-import jdk.jfr.Name;
-
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
+import javax.persistence.Table;
 
 @Entity
-@Name("movie")
+@Table(name = "movie")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

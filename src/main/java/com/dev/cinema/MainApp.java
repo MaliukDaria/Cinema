@@ -9,10 +9,11 @@ public class MainApp {
 
     public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
-    movieService.getAll().forEach(System.out::println);
+        movieService.getAll().forEach(System.out::println);
         Movie movie = new Movie();
         movie.setTitle("Pulp Fiction");
         movie.setDescription("Best movie");
+        movieService.add(movie);
         movieService.getAll().forEach(System.out::println);
     }
 }
