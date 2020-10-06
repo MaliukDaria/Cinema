@@ -14,11 +14,11 @@ public class CinemaHallServiceImpl implements CinemaHallService {
 
     @Override
     public CinemaHall add(CinemaHall cinemaHall) {
-        return null;
+        return cinemaHallDao.add(cinemaHall);
     }
 
     @Override
     public List<CinemaHall> getAll() {
-        return null;
+        return cinemaHallDao.getAll();
     }
 }
