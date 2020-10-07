@@ -18,7 +18,7 @@ import java.util.List;
 public class MainApp {
     private static Injector injector = Injector.getInstance("com.dev.cinema");
 
-    public static void main(String[] args) throws AuthenticationException {
+    public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
         movieService.getAll().forEach(System.out::println);
         Movie pulpFiction = new Movie("Pulp Fiction", "Best movie");
@@ -63,8 +63,12 @@ public class MainApp {
             System.out.println("Expected AuthenticationException:\n " + e + "\n");
         }
         authenticationService.register(alise.getEmail(), alise.getPassword());
-        System.out.println("Expected alise:\n "
-                + authenticationService.login(alise.getEmail(), alise.getPassword()) + "\n");
+        try {
+            System.out.println("Expected alise:\n "
+                    + authenticationService.login(alise.getEmail(), alise.getPassword()) + "\n");
+        } catch (AuthenticationException e) {
+            System.out.println("Can't login " + e);
+        }
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(bob);
         System.out.println("Expected " + bob + "\n"

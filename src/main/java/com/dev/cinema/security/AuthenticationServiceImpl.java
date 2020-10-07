@@ -20,9 +20,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 && user.get().getPassword()
                 .equals(HashUtil.hashPassword(password, user.get().getSalt()))) {
             return user.get();
-        } else {
-            throw new AuthenticationException("Incorrect login or password");
         }
+        throw new AuthenticationException("Incorrect login or password");
     }
 
     @Override
