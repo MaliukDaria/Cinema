@@ -14,9 +14,19 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String title;
+
     private String description;
+
+    public Movie() {
+    }
+
+    public Movie(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
 
     public Long getId() {
         return id;
