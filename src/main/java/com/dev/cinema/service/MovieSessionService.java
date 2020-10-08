@@ -4,8 +4,6 @@ import com.dev.cinema.model.MovieSession;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface MovieSessionService {
+public interface MovieSessionService extends GenericService<MovieSession> {
     List<MovieSession> findAvailableSessions(Long movieId, LocalDate date);
-
-    MovieSession add(MovieSession session);
 }

@@ -1,12 +1,16 @@
 package com.dev.cinema;
 
+import com.dev.cinema.exception.AuthenticationException;
 import com.dev.cinema.lib.Injector;
 import com.dev.cinema.model.CinemaHall;
 import com.dev.cinema.model.Movie;
 import com.dev.cinema.model.MovieSession;
+import com.dev.cinema.model.User;
+import com.dev.cinema.security.AuthenticationService;
 import com.dev.cinema.service.CinemaHallService;
 import com.dev.cinema.service.MovieService;
 import com.dev.cinema.service.MovieSessionService;
+import com.dev.cinema.service.UserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,6 +51,37 @@ public class MainApp {
 
         List<MovieSession> availableSessions =
                 movieSessionService.findAvailableSessions(pulpFiction.getId(), LocalDate.now());
-        System.out.println(availableSessions);
+        availableSessions.forEach(System.out::println);
+
+        User alise = new User("alise@mail.com", "1111");
+        User bob = new User("bob@mail.com", "1234");
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        try {
+            authenticationService.login(bob.getEmail(), bob.getPassword());
+        } catch (AuthenticationException e) {
+            System.out.println("Expected AuthenticationException:\n " + e + "\n");
+        }
+        authenticationService.register(alise.getEmail(), alise.getPassword());
+        try {
+            System.out.println("Expected alise:\n "
+                    + authenticationService.login(alise.getEmail(), alise.getPassword()) + "\n");
+        } catch (AuthenticationException e) {
+            System.out.println("Can't login " + e);
+        }
+        UserService userService = (UserService) injector.getInstance(UserService.class);
+        userService.add(bob);
+        System.out.println("Expected " + bob + "\n"
+                + userService.findByEmail(bob.getEmail()).orElseThrow() + "\n");
+        try {
+            authenticationService.register(bob.getEmail(), "2222");
+        } catch (Exception e) {
+            System.out.println("Expected exception: \n" + e + "\n");
+        }
+        try {
+            authenticationService.login(alise.getEmail(), "invalid password");
+        } catch (AuthenticationException e) {
+            System.out.println("Expected \"Incorrect login or password\" :" + e);
+        }
     }
 }
