@@ -5,11 +5,13 @@ import com.dev.cinema.lib.Injector;
 import com.dev.cinema.model.CinemaHall;
 import com.dev.cinema.model.Movie;
 import com.dev.cinema.model.MovieSession;
+import com.dev.cinema.model.ShoppingCart;
 import com.dev.cinema.model.User;
 import com.dev.cinema.security.AuthenticationService;
 import com.dev.cinema.service.CinemaHallService;
 import com.dev.cinema.service.MovieService;
 import com.dev.cinema.service.MovieSessionService;
+import com.dev.cinema.service.ShoppingCartService;
 import com.dev.cinema.service.UserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,15 +56,17 @@ public class MainApp {
         availableSessions.forEach(System.out::println);
 
         User alise = new User("alise@mail.com", "1111");
-        User bob = new User("bob@mail.com", "1234");
+        User bob = new User("bob@mail.com", "bob");
+        User badBob = new User("badBob@mail.com", "1234");
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
-            authenticationService.login(bob.getEmail(), bob.getPassword());
+            authenticationService.login(badBob.getEmail(), badBob.getPassword());
         } catch (AuthenticationException e) {
             System.out.println("Expected AuthenticationException:\n " + e + "\n");
         }
-        authenticationService.register(alise.getEmail(), alise.getPassword());
+        alise = authenticationService.register(alise.getEmail(), alise.getPassword());
+        bob = authenticationService.register(bob.getEmail(), bob.getPassword());
         try {
             System.out.println("Expected alise:\n "
                     + authenticationService.login(alise.getEmail(), alise.getPassword()) + "\n");
@@ -70,11 +74,11 @@ public class MainApp {
             System.out.println("Can't login " + e);
         }
         UserService userService = (UserService) injector.getInstance(UserService.class);
-        userService.add(bob);
-        System.out.println("Expected " + bob + "\n"
-                + userService.findByEmail(bob.getEmail()).orElseThrow() + "\n");
+        userService.add(badBob);
+        System.out.println("Expected " + badBob + "\n"
+                + userService.findByEmail(badBob.getEmail()).orElseThrow() + "\n");
         try {
-            authenticationService.register(bob.getEmail(), "2222");
+            authenticationService.register(badBob.getEmail(), "2222");
         } catch (Exception e) {
             System.out.println("Expected exception: \n" + e + "\n");
         }
@@ -83,5 +87,14 @@ public class MainApp {
         } catch (AuthenticationException e) {
             System.out.println("Expected \"Incorrect login or password\" :" + e);
         }
+        ShoppingCartService shoppingCartService =
+                (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+        shoppingCartService.addSession(todayPulpFicMovieSession, alise);
+        shoppingCartService.addSession(todayLordMovieSession, alise);
+        shoppingCartService.addSession(tomorrowMovieSession, bob);
+        ShoppingCart aliseShoppingCart = shoppingCartService.getByUser(alise);
+        System.out.println("Expected 2: \n" + aliseShoppingCart.getTickets().size());
+        shoppingCartService.clear(aliseShoppingCart);
+        System.out.println("Expected 0: \n" + aliseShoppingCart.getTickets().size());
     }
 }
