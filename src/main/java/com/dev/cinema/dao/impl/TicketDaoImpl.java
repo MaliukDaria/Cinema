@@ -5,10 +5,8 @@ import com.dev.cinema.exception.DataProcessingException;
 import com.dev.cinema.lib.Dao;
 import com.dev.cinema.model.Ticket;
 import com.dev.cinema.util.HibernateUtil;
-import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 @Dao
 public class TicketDaoImpl implements TicketDao {
@@ -33,17 +31,6 @@ public class TicketDaoImpl implements TicketDao {
             if (session != null) {
                 session.close();
             }
-        }
-    }
-
-    @Override
-    public List<Ticket> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<Ticket> getAllTicketsQuery = session.createQuery(
-                    "FROM Ticket", Ticket.class);
-            return getAllTicketsQuery.getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Cant get all tickets from the database", e);
         }
     }
 }

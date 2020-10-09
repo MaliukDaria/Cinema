@@ -6,7 +6,6 @@ import com.dev.cinema.lib.Dao;
 import com.dev.cinema.model.ShoppingCart;
 import com.dev.cinema.model.User;
 import com.dev.cinema.util.HibernateUtil;
-import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -74,17 +73,6 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
             if (session != null) {
                 session.close();
             }
-        }
-    }
-
-    @Override
-    public List<ShoppingCart> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<ShoppingCart> getAllShoppingCartsQuery = session.createQuery(
-                    "FROM ShoppingCart", ShoppingCart.class);
-            return getAllShoppingCartsQuery.getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Cant get all shopping carts from the database", e);
         }
     }
 }

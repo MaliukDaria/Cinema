@@ -39,17 +39,6 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     }
 
     @Override
-    public List<MovieSession> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<MovieSession> getAllMovieSessionsQuery = session.createQuery(
-                    "FROM MovieSession", MovieSession.class);
-            return getAllMovieSessionsQuery.getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Cant get all movie sessions from the database", e);
-        }
-    }
-
-    @Override
     public List<MovieSession> getByMovieAndDate(Long movieId, LocalDate date) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<MovieSession> movieSessionQuery =

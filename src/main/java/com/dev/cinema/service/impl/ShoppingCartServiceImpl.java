@@ -9,7 +9,6 @@ import com.dev.cinema.model.ShoppingCart;
 import com.dev.cinema.model.Ticket;
 import com.dev.cinema.model.User;
 import com.dev.cinema.service.ShoppingCartService;
-import java.util.List;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -49,10 +48,5 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         return shoppingCartDao.add(shoppingCart);
-    }
-
-    @Override
-    public List<ShoppingCart> getAll() {
-        return shoppingCartDao.getAll();
     }
 }
