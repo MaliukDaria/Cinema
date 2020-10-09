@@ -21,7 +21,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.persist(movieSession);
+            session.save(movieSession);
             transaction.commit();
             return movieSession;
         } catch (Exception e) {
@@ -35,17 +35,6 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             if (session != null) {
                 session.close();
             }
-        }
-    }
-
-    @Override
-    public List<MovieSession> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<MovieSession> getAllMovieSessionsQuery = session.createQuery(
-                    "FROM MovieSession", MovieSession.class);
-            return getAllMovieSessionsQuery.getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Cant get all movie sessions from the database", e);
         }
     }
 
