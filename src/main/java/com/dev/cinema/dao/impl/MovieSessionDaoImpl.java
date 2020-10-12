@@ -43,8 +43,6 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<MovieSession> movieSessionQuery =
                     session.createQuery("FROM MovieSession ms "
-                                    + "JOIN FETCH ms.cinemaHall "
-                                    + "JOIN FETCH ms.movie "
                                     + "WHERE ms.movie.id = :id "
                                     + "AND ms.showTime BETWEEN :start AND :end",
                             MovieSession.class)
@@ -52,9 +50,6 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
                     .setParameter("start", date.atStartOfDay())
                     .setParameter("end", date.atTime(LocalTime.MAX));
             return movieSessionQuery.getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException(
-                    "Cant get movie sessions by movie id: " + movieId + " and date: " + date, e);
         }
     }
 }

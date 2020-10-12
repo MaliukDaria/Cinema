@@ -43,8 +43,6 @@ public class UserDaoImpl implements UserDao {
             Query<User> getAllUsersQuery = session.createQuery(
                     "FROM User", User.class);
             return getAllUsersQuery.getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Cant get all users from the database", e);
         }
     }
 
@@ -55,8 +53,6 @@ public class UserDaoImpl implements UserDao {
                     "FROM User WHERE email = :userEmail", User.class)
                     .setParameter("userEmail", email);
             return findByEmailQuery.uniqueResultOptional();
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't find user with email: " + email, e);
         }
     }
 }

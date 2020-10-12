@@ -53,7 +53,6 @@ public class MainApp {
         MovieSession tomorrowMovieSession = new MovieSession(
                 LocalDateTime.now().plusDays(1), pulpFiction, blueCinemaHall);
         movieSessionService.add(tomorrowMovieSession);
-
         List<MovieSession> availableSessions =
                 movieSessionService.findAvailableSessions(pulpFiction.getId(), LocalDate.now());
         availableSessions.forEach(System.out::println);
@@ -90,6 +89,7 @@ public class MainApp {
         } catch (AuthenticationException e) {
             System.out.println("Expected \"Incorrect login or password\" :" + e);
         }
+
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(todayPulpFicMovieSession, alise);
@@ -102,6 +102,7 @@ public class MainApp {
 
         shoppingCartService.addSession(todayPulpFicMovieSession, alise);
         shoppingCartService.addSession(todayLordMovieSession, alise);
+        shoppingCartService.addSession(tomorrowMovieSession, alise);
         OrderService orderService = (OrderService) injector.getInstance(OrderService.class);
         aliseShoppingCart = shoppingCartService.getByUser(alise);
         List<Ticket> aliseTickets = aliseShoppingCart.getTickets();
@@ -111,6 +112,6 @@ public class MainApp {
         aliseShoppingCart = shoppingCartService.getByUser(alise);
         orderService.completeOrder(aliseShoppingCart.getTickets(), alise);
         List<Order> aliseOrderHistory = orderService.getOrderHistory(alise);
-        aliseOrderHistory.forEach(System.out::println);
+        System.out.println();
     }
 }
