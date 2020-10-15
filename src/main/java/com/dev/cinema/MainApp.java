@@ -75,7 +75,7 @@ public class MainApp {
             logger.info("Expected alise:\n "
                     + authenticationService.login(alise.getEmail(), "1111") + "\n");
         } catch (AuthenticationException e) {
-            logger.info("Can't login " + e);
+            logger.warn("Login failed: " + e);
         }
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(badBob);
