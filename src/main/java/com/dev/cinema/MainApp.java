@@ -5,12 +5,15 @@ import com.dev.cinema.lib.Injector;
 import com.dev.cinema.model.CinemaHall;
 import com.dev.cinema.model.Movie;
 import com.dev.cinema.model.MovieSession;
+import com.dev.cinema.model.Order;
 import com.dev.cinema.model.ShoppingCart;
+import com.dev.cinema.model.Ticket;
 import com.dev.cinema.model.User;
 import com.dev.cinema.security.AuthenticationService;
 import com.dev.cinema.service.CinemaHallService;
 import com.dev.cinema.service.MovieService;
 import com.dev.cinema.service.MovieSessionService;
+import com.dev.cinema.service.OrderService;
 import com.dev.cinema.service.ShoppingCartService;
 import com.dev.cinema.service.UserService;
 import java.time.LocalDate;
@@ -50,7 +53,6 @@ public class MainApp {
         MovieSession tomorrowMovieSession = new MovieSession(
                 LocalDateTime.now().plusDays(1), pulpFiction, blueCinemaHall);
         movieSessionService.add(tomorrowMovieSession);
-
         List<MovieSession> availableSessions =
                 movieSessionService.findAvailableSessions(pulpFiction.getId(), LocalDate.now());
         availableSessions.forEach(System.out::println);
@@ -87,6 +89,7 @@ public class MainApp {
         } catch (AuthenticationException e) {
             System.out.println("Expected \"Incorrect login or password\" :" + e);
         }
+
         ShoppingCartService shoppingCartService =
                 (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
         shoppingCartService.addSession(todayPulpFicMovieSession, alise);
@@ -96,5 +99,19 @@ public class MainApp {
         System.out.println("Expected 2: \n" + aliseShoppingCart.getTickets().size());
         shoppingCartService.clear(aliseShoppingCart);
         System.out.println("Expected 0: \n" + aliseShoppingCart.getTickets().size());
+
+        shoppingCartService.addSession(todayPulpFicMovieSession, alise);
+        shoppingCartService.addSession(todayLordMovieSession, alise);
+        shoppingCartService.addSession(tomorrowMovieSession, alise);
+        OrderService orderService = (OrderService) injector.getInstance(OrderService.class);
+        aliseShoppingCart = shoppingCartService.getByUser(alise);
+        List<Ticket> aliseTickets = aliseShoppingCart.getTickets();
+        System.out.println("----------");
+        orderService.completeOrder(aliseTickets, alise);
+        shoppingCartService.addSession(tomorrowMovieSession, alise);
+        aliseShoppingCart = shoppingCartService.getByUser(alise);
+        orderService.completeOrder(aliseShoppingCart.getTickets(), alise);
+        List<Order> aliseOrderHistory = orderService.getOrderHistory(alise);
+        System.out.println();
     }
 }

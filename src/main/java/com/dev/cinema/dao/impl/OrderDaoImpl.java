@@ -1,9 +1,10 @@
 package com.dev.cinema.dao.impl;
 
-import com.dev.cinema.dao.CinemaHallDao;
+import com.dev.cinema.dao.OrderDao;
 import com.dev.cinema.exception.DataProcessingException;
 import com.dev.cinema.lib.Dao;
-import com.dev.cinema.model.CinemaHall;
+import com.dev.cinema.model.Order;
+import com.dev.cinema.model.User;
 import com.dev.cinema.util.HibernateUtil;
 import java.util.List;
 import org.hibernate.Session;
@@ -11,23 +12,23 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 @Dao
-public class CinemaHallDaoImpl implements CinemaHallDao {
+public class OrderDaoImpl implements OrderDao {
     @Override
-    public CinemaHall add(CinemaHall cinemaHall) {
+    public Order add(Order order) {
         Transaction transaction = null;
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.save(cinemaHall);
+            session.save(order);
             transaction.commit();
-            return cinemaHall;
+            return order;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
             throw new DataProcessingException(
-                    "Cant add cinema hall with description" + cinemaHall.getDescription()
+                    "Cant add order with user id: " + order.getUser().getId()
                             + " to the database", e);
         } finally {
             if (session != null) {
@@ -37,11 +38,14 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
     }
 
     @Override
-    public List<CinemaHall> getAll() {
+    public List<Order> getUserOrders(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<CinemaHall> getAllCinemaHalls = session.createQuery(
-                    "FROM CinemaHall", CinemaHall.class);
-            return getAllCinemaHalls.getResultList();
+            Query<Order> getUserOrdersQuery = session.createQuery(
+                    "SELECT DISTINCT o FROM Order o "
+                            + "JOIN FETCH o.tickets t "
+                            + "WHERE o.user.id = :userId", Order.class)
+                    .setParameter("userId", user.getId());
+            return getUserOrdersQuery.getResultList();
         }
     }
 }
