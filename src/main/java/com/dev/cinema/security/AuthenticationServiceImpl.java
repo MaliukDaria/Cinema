@@ -8,12 +8,13 @@ import com.dev.cinema.service.ShoppingCartService;
 import com.dev.cinema.service.UserService;
 import com.dev.cinema.util.HashUtil;
 import java.util.Optional;
+import org.apache.log4j.Logger;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final Logger logger = Logger.getLogger(AuthenticationServiceImpl.class);
     @Inject
     private UserService userService;
-
     @Inject
     private ShoppingCartService shoppingCartService;
 
@@ -23,6 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (user.isPresent()
                 && user.get().getPassword()
                 .equals(HashUtil.hashPassword(password, user.get().getSalt()))) {
+            logger.info("user " + user.get() + " logged in successfully");
             return user.get();
         }
         throw new AuthenticationException("Incorrect login or password");
