@@ -23,7 +23,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order completeOrder(List<Ticket> tickets, User user) {
-        Order order = new Order(new ArrayList<>(tickets), user, LocalDateTime.now());
+        Order order = new Order();
+        order.setTickets(new ArrayList<>(tickets));
+        order.setOrderDate(LocalDateTime.now());
+        order.setUser(user);
         add(order);
         shoppingCartService.clear(shoppingCartService.getByUser(user));
         return order;

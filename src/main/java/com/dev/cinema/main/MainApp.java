@@ -30,38 +30,60 @@ public class MainApp {
                 new AnnotationConfigApplicationContext(AppConfig.class);
         MovieService movieService = context.getBean(MovieService.class);
         movieService.getAll().forEach(logger::info);
-        Movie pulpFiction = new Movie("Pulp Fiction", "Best movie");
-        Movie theLordOfTheRings = new Movie("The Lord of the Rings", "Lord");
+        Movie pulpFiction = new Movie();
+        pulpFiction.setTitle("Pulp Fiction");
+        pulpFiction.setDescription("Best movie");
+        Movie theLordOfTheRings = new Movie();
+        theLordOfTheRings.setTitle("The Lord of the Rings");
+        theLordOfTheRings.setDescription("Lord");
         movieService.add(pulpFiction);
         movieService.add(theLordOfTheRings);
         movieService.getAll().forEach(logger::info);
 
+        CinemaHall redCinemaHall = new CinemaHall();
+        redCinemaHall.setCapacity(13);
+        redCinemaHall.setDescription("Red cinema hall");
+        CinemaHall blueCinemaHall = new CinemaHall();
+        blueCinemaHall.setCapacity(100);
+        blueCinemaHall.setDescription("Blue cinema hall");
         CinemaHallService cinemaHallService = context.getBean(CinemaHallService.class);
-        CinemaHall redCinemaHall = new CinemaHall(13, "Red cinema hall");
-        CinemaHall blueCinemaHall = new CinemaHall(100, "Blue cinema hall");
         cinemaHallService.add(redCinemaHall);
         cinemaHallService.add(blueCinemaHall);
 
-        MovieSession todayPulpFicMovieSession = new MovieSession(
-                LocalDateTime.now().plusHours(3), pulpFiction, redCinemaHall);
-        MovieSession secondTodayPulpFicMovieSession = new MovieSession(
-                LocalDateTime.now().plusHours(2), pulpFiction, blueCinemaHall);
-        MovieSession todayLordMovieSession = new MovieSession(
-                LocalDateTime.now().plusHours(1), theLordOfTheRings, blueCinemaHall);
+        MovieSession todayPulpFicMovieSession = new MovieSession();
+        todayPulpFicMovieSession.setMovie(pulpFiction);
+        todayPulpFicMovieSession.setCinemaHall(redCinemaHall);
+        todayPulpFicMovieSession.setShowTime(LocalDateTime.now().plusHours(3));
+        MovieSession secondTodayPulpFicMovieSession = new MovieSession();
+        secondTodayPulpFicMovieSession.setMovie(pulpFiction);
+        secondTodayPulpFicMovieSession.setCinemaHall(blueCinemaHall);
+        secondTodayPulpFicMovieSession.setShowTime(LocalDateTime.now().plusHours(2));
+        MovieSession todayLordMovieSession = new MovieSession();
+        todayLordMovieSession.setMovie(theLordOfTheRings);
+        todayLordMovieSession.setCinemaHall(blueCinemaHall);
+        todayLordMovieSession.setShowTime(LocalDateTime.now().plusHours(1));
         MovieSessionService movieSessionService = context.getBean(MovieSessionService.class);
         movieSessionService.add(todayPulpFicMovieSession);
         movieSessionService.add(secondTodayPulpFicMovieSession);
         movieSessionService.add(todayLordMovieSession);
-        MovieSession tomorrowMovieSession = new MovieSession(
-                LocalDateTime.now().plusDays(1), pulpFiction, blueCinemaHall);
+        MovieSession tomorrowMovieSession = new MovieSession();
+        tomorrowMovieSession.setMovie(pulpFiction);
+        tomorrowMovieSession.setCinemaHall(blueCinemaHall);
+        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1));
         movieSessionService.add(tomorrowMovieSession);
         List<MovieSession> availableSessions =
                 movieSessionService.findAvailableSessions(pulpFiction.getId(), LocalDate.now());
         availableSessions.forEach(logger::info);
 
-        User alise = new User("alise@mail.com", "1111");
-        User bob = new User("bob@mail.com", "bob");
-        User badBob = new User("badBob@mail.com", "1234");
+        User alise = new User();
+        alise.setEmail("alise@mail.com");
+        alise.setPassword("1111");
+        User bob = new User();
+        bob.setEmail("bob@mail.com");
+        bob.setPassword("bob");
+        User badBob = new User();
+        badBob.setEmail("badBob@mail.com");
+        badBob.setPassword("1234");
         AuthenticationService authenticationService = context.getBean(AuthenticationService.class);
         try {
             authenticationService.login(badBob.getEmail(), badBob.getPassword());
