@@ -38,6 +38,7 @@ public class MainApp {
         theLordOfTheRings.setDescription("Lord");
         movieService.add(pulpFiction);
         movieService.add(theLordOfTheRings);
+        movieService.get(1L);
         movieService.getAll().forEach(logger::info);
 
         CinemaHall redCinemaHall = new CinemaHall();

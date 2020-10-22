@@ -24,9 +24,9 @@ public class MovieSessionDaoImpl extends GenericDaoImpl<MovieSession> implements
                                     + "WHERE ms.movie.id = :id "
                                     + "AND ms.showTime BETWEEN :start AND :end",
                             MovieSession.class)
-                    .setParameter("id", movieId)
-                    .setParameter("start", date.atStartOfDay())
-                    .setParameter("end", date.atTime(LocalTime.MAX));
+                            .setParameter("id", movieId)
+                            .setParameter("start", date.atStartOfDay())
+                            .setParameter("end", date.atTime(LocalTime.MAX));
             return movieSessionQuery.getResultList();
         }
     }

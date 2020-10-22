@@ -2,10 +2,12 @@ package com.dev.cinema.dao.impl;
 
 import com.dev.cinema.dao.GenericDao;
 import com.dev.cinema.exception.DataProcessingException;
+import java.util.Optional;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -38,6 +40,16 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public Optional<T> get(Long id, Class<T> clazz) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<T> getByIdQuery = session.createQuery(
+                    "FROM " + clazz.getSimpleName() + " m WHERE m.id = :id", clazz)
+                    .setParameter("id", id);
+            return getByIdQuery.uniqueResultOptional();
         }
     }
 }
