@@ -2,6 +2,7 @@ package com.dev.cinema.dao.impl;
 
 import com.dev.cinema.dao.GenericDao;
 import com.dev.cinema.exception.DataProcessingException;
+import java.util.Optional;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,6 +39,13 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public Optional<T> get(Long id, Class<T> clazz) {
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.ofNullable(session.get(clazz, id));
         }
     }
 }

@@ -52,4 +52,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart add(ShoppingCart shoppingCart) {
         return shoppingCartDao.add(shoppingCart);
     }
+
+    @Override
+    public ShoppingCart get(Long id) {
+        return shoppingCartDao.get(id, ShoppingCart.class).get();
+    }
 }
