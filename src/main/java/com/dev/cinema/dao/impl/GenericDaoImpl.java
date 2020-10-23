@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -46,10 +45,7 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
     @Override
     public Optional<T> get(Long id, Class<T> clazz) {
         try (Session session = sessionFactory.openSession()) {
-            Query<T> getByIdQuery = session.createQuery(
-                    "FROM " + clazz.getSimpleName() + " m WHERE m.id = :id", clazz)
-                    .setParameter("id", id);
-            return getByIdQuery.uniqueResultOptional();
+            return Optional.ofNullable(session.get(clazz, id));
         }
     }
 }

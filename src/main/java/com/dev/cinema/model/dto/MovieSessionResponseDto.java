@@ -7,6 +7,7 @@ import lombok.Data;
 public class MovieSessionResponseDto {
     private Long id;
     private LocalDateTime showTime;
+    private Long movieId;
     private String movieTitle;
     private Long cinemaHallId;
 }
