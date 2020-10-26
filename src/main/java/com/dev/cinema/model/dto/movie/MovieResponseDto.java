@@ -1,4 +1,4 @@
-package com.dev.cinema.model.dto;
+package com.dev.cinema.model.dto.movie;
 
 import lombok.Data;
 
