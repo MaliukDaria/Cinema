@@ -7,6 +7,5 @@ import lombok.Data;
 @Data
 public class ShoppingCartResponseDto {
     private Long id;
-    private Long userId;
     private List<TicketResponseDto> tickets;
 }
