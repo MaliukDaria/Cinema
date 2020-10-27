@@ -1,27 +1,21 @@
 package com.dev.cinema.service.mapper;
 
 import com.dev.cinema.model.ShoppingCart;
+import com.dev.cinema.model.Ticket;
 import com.dev.cinema.model.dto.shoppingcart.ShoppingCartResponseDto;
-import com.dev.cinema.model.dto.ticket.TicketResponseDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ShoppingCartMapper {
-    private final TicketMapper ticketMapper;
-
-    public ShoppingCartMapper(TicketMapper ticketMapper) {
-        this.ticketMapper = ticketMapper;
-    }
-
     public ShoppingCartResponseDto mapToShoppingCartResponseDto(ShoppingCart shoppingCart) {
+        List<Long> ticketIds = shoppingCart.getTickets().stream()
+                .map(Ticket::getId)
+                .collect(Collectors.toList());
         ShoppingCartResponseDto responseDto = new ShoppingCartResponseDto();
         responseDto.setId(shoppingCart.getId());
-        List<TicketResponseDto> ticketsResponseDto = shoppingCart.getTickets().stream()
-                .map(ticketMapper::mapToTicketResponseDto)
-                .collect(Collectors.toList());
-        responseDto.setTickets(ticketsResponseDto);
+        responseDto.setTicketIds(ticketIds);
         return responseDto;
     }
 }
