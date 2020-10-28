@@ -3,7 +3,6 @@ package com.dev.cinema.security;
 import com.dev.cinema.model.User;
 import com.dev.cinema.service.ShoppingCartService;
 import com.dev.cinema.service.UserService;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 @Service
