@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,8 +33,10 @@ public class OrderController {
     }
 
     @PostMapping("/complete")
-    public void addOrder(@RequestBody Long userId) {
-        User user = userService.get(userId);
+    public void addOrder(Authentication authentication) {
+        UserDetails details = (UserDetails) authentication.getPrincipal();
+        String email = details.getUsername();
+        User user = userService.findByEmail(email).get();
         ShoppingCart shoppingCart = shoppingCartService.getByUser(user);
         orderService.completeOrder(shoppingCart.getTickets(), user);
     }

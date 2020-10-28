@@ -3,6 +3,7 @@ package com.dev.cinema.service.mapper;
 import com.dev.cinema.model.CinemaHall;
 import com.dev.cinema.model.dto.cinemahall.CinemaHallRequestDto;
 import com.dev.cinema.model.dto.cinemahall.CinemaHallResponseDto;
+import javax.validation.Valid;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,7 +16,7 @@ public class CinemaHallMapper {
         return responseDto;
     }
 
-    public CinemaHall mapToCinemaHall(CinemaHallRequestDto requestDto) {
+    public CinemaHall mapToCinemaHall(@Valid CinemaHallRequestDto requestDto) {
         CinemaHall cinemaHall = new CinemaHall();
         cinemaHall.setCapacity(requestDto.getCapacity());
         cinemaHall.setDescription(requestDto.getDescription());
