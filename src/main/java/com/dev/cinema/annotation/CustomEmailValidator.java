@@ -7,10 +7,6 @@ public class CustomEmailValidator implements ConstraintValidator<CustomEmailCons
     public static final String EMAIL_REGEX = "^(.+)@(.+)$";
 
     @Override
-    public void initialize(CustomEmailConstraint constraintAnnotation) {
-    }
-
-    @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
         return email != null && email.matches(EMAIL_REGEX);
     }
