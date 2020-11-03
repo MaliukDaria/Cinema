@@ -7,13 +7,13 @@ import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 @Service
-public class InjectData {
+public class DataInjector {
     private final UserService userService;
     private final RoleService roleService;
     private final ShoppingCartService shoppingCartService;
 
-    public InjectData(UserService userService, RoleService roleService,
-                      ShoppingCartService shoppingCartService) {
+    public DataInjector(UserService userService, RoleService roleService,
+                        ShoppingCartService shoppingCartService) {
         this.userService = userService;
         this.roleService = roleService;
         this.shoppingCartService = shoppingCartService;
