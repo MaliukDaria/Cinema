@@ -28,7 +28,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public Optional<User> findByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> findByEmailQuery = session.createQuery(
-                    "FROM User WHERE email = :userEmail", User.class)
+                    "FROM User u JOIN FETCH u.roles WHERE u.email = :userEmail ", User.class)
                     .setParameter("userEmail", email);
             return findByEmailQuery.uniqueResultOptional();
         }
