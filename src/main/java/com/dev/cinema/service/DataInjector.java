@@ -31,11 +31,11 @@ public class DataInjector {
         admin.setRoles(Set.of(roleAdmin));
         User simpleUser = new User();
         simpleUser.setEmail("alise@mail.com");
-        simpleUser.setPassword("1111");
+        simpleUser.setPassword("1234");
         simpleUser.setRoles(Set.of(roleUser));
         User adminAndSimple = new User();
         adminAndSimple.setEmail("bob@mail.com");
-        adminAndSimple.setPassword("1111");
+        adminAndSimple.setPassword("1234");
         adminAndSimple.setRoles(Set.of(roleAdmin, roleUser));
         userService.add(admin);
         userService.add(adminAndSimple);
