@@ -1,5 +1,5 @@
 # Cinema 
-The goal of this project is to create a model of a cinema ticket service. The project implements role-based access control with 2 roles: user and administrator.:
+The goal of this project is to create a model of a cinema ticket service. The project implements role-based access control with 2 roles: user and administrator:
  - administrators can add cinema halls, movies and movie sessions
  - users can add tickets to cart, checkout and view order history
  - registration, a list of films and available sessions are available for unregistered users
