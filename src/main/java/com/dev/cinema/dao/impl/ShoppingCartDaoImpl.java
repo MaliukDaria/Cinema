@@ -21,7 +21,8 @@ public class ShoppingCartDaoImpl extends GenericDaoImpl<ShoppingCart> implements
         try (Session session = sessionFactory.openSession()) {
             Query<ShoppingCart> getShoppingCartQuery = session.createQuery(
                     "FROM ShoppingCart sc "
-                            + "JOIN FETCH sc.user "
+                            + "JOIN FETCH sc.user u "
+                            + "JOIN FETCH u.roles "
                             + "LEFT JOIN FETCH sc.tickets "
                             + "WHERE sc.user.id = :userId",
                     ShoppingCart.class)
