@@ -4,7 +4,7 @@ The goal of this project is to create a model of a cinema ticket service. The pr
  - users can add tickets to cart, checkout and view order history
  - registration, a list of films and available sessions are available for unregistered users
 
-##Implementation details and technologies
+## Implementation details and technologies
 Project based on 3-layer architecture:
 - Presentation layer (controllers)
 - Application layer (services)
